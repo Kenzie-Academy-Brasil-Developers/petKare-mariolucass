@@ -1,6 +1,6 @@
+from rest_framework.views import Response, status
 from groups.models import Group
 from traits.models import Trait
-from rest_framework.views import Response, status
 
 
 class PetMethods:
@@ -13,13 +13,10 @@ class PetMethods:
 
     def find_traits(traitsParams):
         traits = []
-
         for trait in traitsParams:
             trait_find = Trait.objects.filter(name__iexact=trait["name"]).first()
-
             if not trait_find:
                 trait_find = Trait.objects.create(**trait)
-
             traits.append(trait_find)
 
         return traits
@@ -31,7 +28,7 @@ class PetMethods:
 
 
 class ResponseMethods:
-    def generate_response_success(status_code, variant="Deleted method"):
+    def generate_response_success(status_code, variant="Delete method"):
         match status_code:
             case 200:
                 status_code = status.HTTP_200_OK
@@ -40,5 +37,4 @@ class ResponseMethods:
             case 204:
                 status_code = status.HTTP_204_NO_CONTENT
                 return Response(status=status.HTTP_204_NO_CONTENT)
-
         return Response(variant, status_code)
